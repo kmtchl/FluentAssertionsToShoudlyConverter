@@ -19,13 +19,13 @@ For example, some dictionary/list equivalence comparisons may need to be handled
 
 1. **Clone the repository:**
 
-2. **Install Shouldy via Nuget if it's not already installed**.
-
-3. **Build the project:**
+2. **Build the project:**
 
    Open the project in your preferred IDE (e.g., Visual Studio, JetBrains Rider) and build the solution.
 
-4. **Run the converter:**
+3. **Install Shouldy via Nuget if it's not installed in your target project**.
+
+5. **Run the converter:**
 
    You can run the converter from the command line or within your IDE.
 
@@ -42,7 +42,7 @@ For example, some dictionary/list equivalence comparisons may need to be handled
     - Set the directory path as a command-line argument in your IDE's run configuration.
     - Run the `Program` class.
 
-5. **Follow the prompts:**
+6. **Follow the prompts:**
 
    If no directory path is provided as an argument, the program will prompt you to enter the directory path.
 
