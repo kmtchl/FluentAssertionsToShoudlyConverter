@@ -239,66 +239,6 @@ namespace FluentAssertionsToShoudlyConverter
             return result;
         }
 
-        // private static void AddAndRemoveImports(List<string?> lines)
-        // {
-        //     bool shouldlyAdded = false;
-        //     int lastUsingIndex = -1;
-        //     int firstUsingIndex = -1;
-        //
-        //     for (int i = 0; i < lines.Count; i++)
-        //     {
-        //         var trimmedLine = lines[i]?.Trim();
-        //         if (trimmedLine == null || !trimmedLine.StartsWith("using ")) continue;
-        //         
-        //         if (firstUsingIndex == -1) firstUsingIndex = i;
-        //         lastUsingIndex = i;
-        //
-        //         if (trimmedLine == "using FluentAssertions;")
-        //         {
-        //             lines[i] = null;
-        //         }
-        //         else if (trimmedLine == "using Shouldly;")
-        //         {
-        //             shouldlyAdded = true;
-        //         }
-        //     }
-        //
-        //     lines.RemoveAll(line => line == null);
-        //
-        //     if (firstUsingIndex != -1)
-        //     {
-        //         for (int i = firstUsingIndex; i <= lastUsingIndex; i++)
-        //         {
-        //             if (i >= lines.Count || !string.IsNullOrWhiteSpace(lines[i])) continue;
-        //             
-        //             lines.RemoveAt(i);
-        //             i--;
-        //             lastUsingIndex--;
-        //         }
-        //     }
-        //
-        //     if (!shouldlyAdded && lastUsingIndex >= 0)
-        //     {
-        //         lines.Insert(lastUsingIndex + 1, "using Shouldly;");
-        //         lastUsingIndex++;
-        //     }
-        //
-        //     int nextContentLine = lastUsingIndex + 1;
-        //     while (nextContentLine < lines.Count && string.IsNullOrWhiteSpace(lines[nextContentLine]))
-        //     {
-        //         nextContentLine++;
-        //     }
-        //
-        //     if (nextContentLine >= lines.Count) return;
-        //     
-        //     while (lastUsingIndex + 1 < nextContentLine)
-        //     {
-        //         lines.RemoveAt(lastUsingIndex + 1);
-        //         nextContentLine--;
-        //     }
-        //
-        //     lines.Insert(lastUsingIndex + 1, "");
-        // }
         private static void AddAndRemoveImports(List<string?> lines)
         {
             bool shouldlyAdded = false;
