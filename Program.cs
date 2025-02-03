@@ -16,7 +16,7 @@ namespace FluentAssertionsToShoudlyConverter
             { ".Should().Be(", ".ShouldBe(" },
             { ".Should().NotBe(", ".ShouldNotBe(" },
             { ".Should().BeNull()", ".ShouldBeNull()" },
-            { ".Should().BeNullOrEmpty()", ".ShouldBeEmpty()" },
+            { ".Should().BeNullOrEmpty()", ".ShouldBeNullOrEmpty()" },
             { ".Should().NotBeNull()", ".ShouldNotBeNull()" },
             { ".Should().BeTrue()", ".ShouldBeTrue()" },
             { ".Should().BeFalse()", ".ShouldBeFalse()" },
@@ -224,7 +224,7 @@ namespace FluentAssertionsToShoudlyConverter
                 break;
             }
 
-            if (!result.Contains("=>") && !result.TrimEnd().EndsWith(";") && !result.TrimEnd().EndsWith(".And"))
+            if (!result.Contains("=>") && !result.TrimEnd().EndsWith(";") && !result.TrimEnd().EndsWith(".And") && !result.TrimEnd().EndsWith(".Should()"))
             {
                 result = result.TrimEnd() + ";";
             }
