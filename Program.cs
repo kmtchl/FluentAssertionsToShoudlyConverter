@@ -16,7 +16,7 @@ namespace FluentAssertionsToShoudlyConverter
             { ".Should().Be(", ".ShouldBe(" },
             { ".Should().NotBe(", ".ShouldNotBe(" },
             { ".Should().BeNull()", ".ShouldBeNull()" },
-            { ".Should().BeNullOrEmpty()", ".ShouldBeEmpty()" },
+            { ".Should().BeNullOrEmpty()", ".ShouldBeNullOrEmpty()" },
             { ".Should().NotBeNull()", ".ShouldNotBeNull()" },
             { ".Should().BeTrue()", ".ShouldBeTrue()" },
             { ".Should().BeFalse()", ".ShouldBeFalse()" },
