@@ -1,9 +1,8 @@
-using NUnit.Framework;
 using System.Text.RegularExpressions;
-using FluentAssertionsToShouldly;
+using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
-namespace FluentAssertionsToShouldlyMigrator.Tests
+namespace FluentAssertionsToShouldlyTests
 {
     [TestFixture]
     public class FluentAssertionsToShouldlyMigratorTests
