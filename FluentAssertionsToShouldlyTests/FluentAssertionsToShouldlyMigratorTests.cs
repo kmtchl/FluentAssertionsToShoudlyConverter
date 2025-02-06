@@ -40,8 +40,8 @@ namespace FluentAssertionsToShouldlyMigrator.Tests
         public void ShouldConvertEmptyBeEquivalentTo()
         {
             // Arrange
-            var input = @"result[0].DeliveryOptionTypeIds.Should().BeEquivalentTo();";
-            var expected = @"result[0].DeliveryOptionTypeIds.ShouldBeEquivalentTo();";
+            var input = @"items[0].Values.Should().BeEquivalentTo();";
+            var expected = @"items[0].Values.ShouldBeEquivalentTo();";
 
             // Act
             var result = ApplyConversion(input);
@@ -54,14 +54,11 @@ namespace FluentAssertionsToShouldlyMigrator.Tests
         public void ShouldConvertDictionaryWithStrictOrdering()
         {
             // Arrange
-            var input = @"result[0].DeliveryOptionTypeOverrideIds.Should().BeEquivalentTo(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } }, options => options.WithStrictOrdering());";
-            var expected = @"result[0].DeliveryOptionTypeOverrideIds.ShouldBe(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } });";
+            var input = @"result.Data.Should().BeEquivalentTo(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } }, options => options.WithStrictOrdering());";
+            var expected = @"result.Data.ShouldBe(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } });";
 
             // Act
             var result = FluentAssertionsToShouldly.FluentAssertionsToShouldlyMigrator.TestConversion(input);
-            Console.WriteLine($"Input: {input}");
-            Console.WriteLine($"Result: {result}");
-            Console.WriteLine($"Expected: {expected}");
 
             // Assert
             Assert.That(result, Is.EqualTo(expected));
@@ -71,8 +68,8 @@ namespace FluentAssertionsToShouldlyMigrator.Tests
         public void ShouldConvertArrayWithStrictOrdering()
         {
             // Arrange
-            var input = @"result[0].DeliveryOptionTypeIds.Should().BeEquivalentTo(new[] { 1, 2 }, options => options.WithStrictOrdering());";
-            var expected = @"result[0].DeliveryOptionTypeIds.ShouldBe(new[] { 1, 2 });";
+            var input = @"items[0].Values.Should().BeEquivalentTo(new[] { 1, 2 }, options => options.WithStrictOrdering());";
+            var expected = @"items[0].Values.ShouldBe(new[] { 1, 2 });";
 
             // Act
             var result = ApplyConversion(input);
@@ -86,40 +83,40 @@ namespace FluentAssertionsToShouldlyMigrator.Tests
         {
             // Arrange
             var input = @"
-            [Test]
-            public async Task Execute_ShouldReturnDeliverySourcesBasedOnPostCodeAndDeliveryOptionExclusions()
-            {
-                excludedDeliveryOptions.AddRange(new[] { 1, 4, 6 });
+                [Test]
+                public async Task Execute_ShouldReturnExpectedResults()
+                {
+                    excludedItems.AddRange(new[] { 1, 4, 6 });
 
-                var result = (await postalCodeFilter.Apply(address, deliverySources)).ToList();
+                    var result = (await dataFilter.Apply(request, items)).ToList();
 
-                result.Count.Should().Be(2);
+                    result.Count.Should().Be(2);
 
-                result[0].DeliveryOptionTypeIds.Should().BeEquivalentTo(new[] { 2 }, options => options.WithStrictOrdering());
-                result[0].DeliveryOptionTypeOverrideIds.Should()
-                    .BeEquivalentTo(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } }, options => options.WithStrictOrdering());
+                    result[0].Values.Should().BeEquivalentTo(new[] { 2 }, options => options.WithStrictOrdering());
+                    result[0].Mappings.Should()
+                        .BeEquivalentTo(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } }, options => options.WithStrictOrdering());
 
-                result[1].DeliveryOptionTypeIds.Should().BeEquivalentTo(new[] { 3 }, options => options.WithStrictOrdering());
-                result[1].DeliveryOptionTypeOverrideIds.Should()
-                    .BeEquivalentTo(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 7 } } }, options => options.WithStrictOrdering());
-            }";
+                    result[1].Values.Should().BeEquivalentTo(new[] { 3 }, options => options.WithStrictOrdering());
+                    result[1].Mappings.Should()
+                        .BeEquivalentTo(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 7 } } }, options => options.WithStrictOrdering());
+                }";
 
             var expected = @"
-            [Test]
-            public async Task Execute_ShouldReturnDeliverySourcesBasedOnPostCodeAndDeliveryOptionExclusions()
-            {
-                excludedDeliveryOptions.AddRange(new[] { 1, 4, 6 });
+                [Test]
+                public async Task Execute_ShouldReturnExpectedResults()
+                {
+                    excludedItems.AddRange(new[] { 1, 4, 6 });
 
-                var result = (await postalCodeFilter.Apply(address, deliverySources)).ToList();
+                    var result = (await dataFilter.Apply(request, items)).ToList();
 
-                result.Count.ShouldBe(2);
+                    result.Count.ShouldBe(2);
 
-                result[0].DeliveryOptionTypeIds.ShouldBe(new[] { 2 });
-                result[0].DeliveryOptionTypeOverrideIds.ShouldBe(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } });
+                    result[0].Values.ShouldBe(new[] { 2 });
+                    result[0].Mappings.ShouldBe(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } });
 
-                result[1].DeliveryOptionTypeIds.ShouldBe(new[] { 3 });
-                result[1].DeliveryOptionTypeOverrideIds.ShouldBe(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 7 } } });
-            }";
+                    result[1].Values.ShouldBe(new[] { 3 });
+                    result[1].Mappings.ShouldBe(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 7 } } });
+                }";
 
             // Act
             var result = ApplyConversion(input);
