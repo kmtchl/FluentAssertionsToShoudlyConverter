@@ -57,7 +57,7 @@ namespace FluentAssertionsToShouldly
             { @"\.Should\(\)\s*\n*\s*\.EndWith\(", ".ShouldEndWith(" },
             { @"\.Should\(\)\s*\n*\s*\.ThrowExactly<", ".ShouldThrowExactly<" },
             { @"\.Should\(\)\s*\n*\s*\.ThrowAsync<", ".ShouldThrowAsync<" },
-            { @"\.Should\(\)\s*\n*\s*\.Throw<([^>]+)>\(\)", ".ShouldThrow<$1>(() =>)" },
+            { @"\.Should\(\)\s*\n*\s*\.Throw<([^>]+)>\(\)", ".ShouldThrow<$1>()" },
             { @"\.Should\(\)\s*\n*\s*\.NotThrow\(\)", ".ShouldNotThrow()" },
             { @"\.Should\(\)\s*\n*\s*\.NotContain\(", ".ShouldNotContain(" },
             { @"\.Should\(\)\s*\n*\s*\.Contain\(", ".ShouldContain(" },
