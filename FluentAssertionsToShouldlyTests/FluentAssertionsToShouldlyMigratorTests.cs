@@ -7,14 +7,6 @@ namespace FluentAssertionsToShouldlyTests
     [TestFixture]
     public class FluentAssertionsToShouldlyMigratorTests
     {
-        private FluentAssertionsToShouldly.FluentAssertionsToShouldlyMigrator _migrator;
-
-        [SetUp]
-        public void Setup()
-        {
-            _migrator = new FluentAssertionsToShouldly.FluentAssertionsToShouldlyMigrator();
-        }
-
         private string NormalizeString(string input)
         {
             // Remove whitespace and normalize line endings
@@ -423,6 +415,179 @@ namespace FluentAssertionsToShouldlyTests
             var expected = @"
                 obj.ShouldBeNull();
                 obj.ShouldNotBeNull();
+            ";
+
+            // Act
+            var result = ApplyConversion(input);
+
+            // Assert
+            Assert.That(NormalizeString(result), Is.EqualTo(NormalizeString(expected)));
+        }
+
+        [Test]
+        public void ShouldConvertBeWithValue_SingleAndMultiLine()
+        {
+            // Arrange
+            var input = @"
+                result.Count.Should().Be(2);
+                result.Count
+                    .Should()
+                    .Be(2);
+            ";
+            var expected = @"
+                result.Count.ShouldBe(2);
+                result.Count
+                    .ShouldBe(2);
+            ";
+
+            // Act
+            var result = ApplyConversion(input);
+
+            // Assert
+            Assert.That(NormalizeString(result), Is.EqualTo(NormalizeString(expected)));
+        }
+
+        [Test]
+        public void ShouldConvertDictionaryWithStrictOrdering_SingleAndMultiLine()
+        {
+            // Arrange
+            var input = @"
+                result.Data.Should().BeEquivalentTo(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } }, options => options.WithStrictOrdering());
+                result.Data
+                    .Should()
+                    .BeEquivalentTo(
+                        new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } },
+                        options => 
+                            options.WithStrictOrdering()
+                    );
+            ";
+            var expected = @"
+                result.Data.ShouldBe(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } });
+                result.Data
+                    .ShouldBe(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } });
+            ";
+
+            // Act
+            var result = ApplyConversion(input);
+
+            // Assert
+            Assert.That(NormalizeString(result), Is.EqualTo(NormalizeString(expected)));
+        }
+
+        [Test]
+        public void ShouldConvertExceptionAssertions_SingleAndMultiLine()
+        {
+            // Arrange
+            var input = @"
+                action.Should().ThrowExactly<ArgumentException>();
+                action
+                    .Should()
+                    .ThrowExactly<ArgumentException>();
+
+                asyncAction.Should().ThrowAsync<InvalidOperationException>();
+                asyncAction
+                    .Should()
+                    .ThrowAsync<InvalidOperationException>();
+
+                action.Should().Throw<Exception>();
+                action
+                    .Should()
+                    .Throw<Exception>();
+
+                action.Should().NotThrow();
+                action
+                    .Should()
+                    .NotThrow();
+            ";
+            var expected = @"
+                action.ShouldThrowExactly<ArgumentException>();
+                action
+                    .ShouldThrowExactly<ArgumentException>();
+
+                asyncAction.ShouldThrowAsync<InvalidOperationException>();
+                asyncAction
+                    .ShouldThrowAsync<InvalidOperationException>();
+
+                action.ShouldThrow<Exception>(() =>);
+                action
+                    .ShouldThrow<Exception>(() =>);
+
+                action.ShouldNotThrow();
+                action
+                    .ShouldNotThrow();
+            ";
+
+            // Act
+            var result = ApplyConversion(input);
+
+            // Assert
+            Assert.That(NormalizeString(result), Is.EqualTo(NormalizeString(expected)));
+        }
+
+        [Test]
+        public void ShouldConvertCollectionAssertions_SingleAndMultiLine()
+        {
+            // Arrange
+            var input = @"
+                list.Should().HaveCount(3);
+                list
+                    .Should()
+                    .HaveCount(3);
+
+                list.Should().BeEmpty();
+                list
+                    .Should()
+                    .BeEmpty();
+
+                list.Should().Contain(item);
+                list
+                    .Should()
+                    .Contain(item);
+            ";
+            var expected = @"
+                list.Count().ShouldBe(3);
+                list
+                    .Count().ShouldBe(3);
+
+                list.ShouldBeEmpty();
+                list
+                    .ShouldBeEmpty();
+
+                list.ShouldContain(item);
+                list
+                    .ShouldContain(item);
+            ";
+
+            // Act
+            var result = ApplyConversion(input);
+
+            // Assert
+            Assert.That(NormalizeString(result), Is.EqualTo(NormalizeString(expected)));
+        }
+
+        [Test]
+        public void ShouldConvertBooleanAssertions_SingleAndMultiLine()
+        {
+            // Arrange
+            var input = @"
+                condition.Should().BeTrue();
+                condition
+                    .Should()
+                    .BeTrue();
+
+                condition.Should().BeFalse();
+                condition
+                    .Should()
+                    .BeFalse();
+            ";
+            var expected = @"
+                condition.ShouldBeTrue();
+                condition
+                    .ShouldBeTrue();
+
+                condition.ShouldBeFalse();
+                condition
+                    .ShouldBeFalse();
             ";
 
             // Act
