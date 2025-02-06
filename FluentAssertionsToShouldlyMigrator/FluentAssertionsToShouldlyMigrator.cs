@@ -10,69 +10,69 @@ namespace FluentAssertionsToShouldly
             { @"using FluentAssertions;", "using Shouldly;" },
             
             // Handle Dictionary with strict ordering - most specific first
-            { @"\.Should\(\)\s*\.BeEquivalentTo\((new Dictionary<[^>]+>[^;]+?),\s*options\s*=>\s*options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
+            { @"\.Should\(\)(?:\s*\n*\s*|\s+)\.BeEquivalentTo\((\s*new Dictionary<[^>]+>[^;]+?),(?:\s*\n*\s*|\s+)options(?:\s*\n*\s*|\s+)=>(?:\s*\n*\s*|\s+)options\.WithStrictOrdering\(\)\s*\)", ".ShouldBe($1)" },
             
             // Handle Dictionary without strict ordering
-            { @"(.*?)\.Should\(\)\.BeEquivalentTo\((new Dictionary<[^>]+>\s*\{[^}]+\})\)", "$1.ShouldBeEquivalentTo($2)" },
+            { @"(.*?)\.Should\(\)(?:\s*\n*\s*|\s+)\.BeEquivalentTo\((new Dictionary<[^>]+>\s*\{[^}]+\})\)", "$1.ShouldBeEquivalentTo($2)" },
             
             // Handle array with strict ordering
-            { @"\.Should\(\)\.BeEquivalentTo\((new\[\][^\)]+?)\s*,\s*options\s*=>\s*options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
-            { @"\.Should\(\)\.BeEquivalentTo\((\[[^\]]+\])\s*,\s*options\s*=>\s*options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
+            { @"\.Should\(\)(?:\s*\n*\s*|\s+)\.BeEquivalentTo\((new\[\][^\)]+?)\s*,(?:\s*\n*\s*|\s+)options(?:\s*\n*\s*|\s+)=>(?:\s*\n*\s*|\s+)options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
+            { @"\.Should\(\)(?:\s*\n*\s*|\s+)\.BeEquivalentTo\((\[[^\]]+\])\s*,(?:\s*\n*\s*|\s+)options(?:\s*\n*\s*|\s+)=>(?:\s*\n*\s*|\s+)options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
             
             // Handle variable with strict ordering
-            { @"\.Should\(\)\.BeEquivalentTo\(([^,\)]+?)\s*,\s*options\s*=>\s*options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
+            { @"\.Should\(\)\s*\n*\s*\.BeEquivalentTo\(([^,\)]+?)\s*,\s*\n*\s*options\s*=>\s*\n*\s*options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
             
             // Handle collection expressions
-            { @"\.Should\(\)\.BeEquivalentTo\((\[(?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*\])\)", ".ShouldBeEquivalentTo($1)" },
+            { @"\.Should\(\)\s*\n*\s*\.BeEquivalentTo\((\[(?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*\])\)", ".ShouldBeEquivalentTo($1)" },
             
             // Handle empty BeEquivalentTo calls
-            { @"\.Should\(\)\.BeEquivalentTo\(\)", ".ShouldBeEquivalentTo()" },
+            { @"\.Should\(\)\s*\n*\s*\.BeEquivalentTo\(\)", ".ShouldBeEquivalentTo()" },
             
             // Generic BeEquivalentTo pattern
-            { @"\.Should\(\)\.BeEquivalentTo\(([^,\)]+)\)", ".ShouldBeEquivalentTo($1)" },
+            { @"\.Should\(\)\s*\n*\s*\.BeEquivalentTo\(([^,\)]+)\)", ".ShouldBeEquivalentTo($1)" },
             
             // Rest of the patterns
-            { @"\.Should\(\)\.NotBeEquivalentTo\(", ".ShouldNotBeEquivalentTo(" },
-            { @"\.Should\(\)\.ContainInOrder\(", ".ShouldBe(" },
-            { @"\.Should\(\)\.ContainSingle\(\)", ".ShouldHaveSingleItem()" },
-            { @"\.Should\(\)\.OnlyHaveUniqueItems\(\)", ".ShouldAllBeUnique()" },
-            { @"\.Should\(\)\.BeNullOrEmpty\(\)", ".ShouldBeNullOrEmpty()" },
-            { @"\.Should\(\)\.NotBeNullOrWhiteSpace\(\)", ".ShouldNotBeNullOrWhiteSpace()" },
-            { @"\.Should\(\)\.NotBeOfType<", ".ShouldNotBeOfType<" },
-            { @"\.Should\(\)\.BeOfType<([^>]+)>\(\)", ".ShouldBeOfType<$1>()" },
-            { @"\.Should\(\)\.BeSameAs\(", ".ShouldBeSameAs(" },
-            { @"\.Should\(\)\.NotBeSameAs\(", ".ShouldNotBeSameAs(" },
-            { @"\.Should\(\)\.BeSubsetOf\(", ".ShouldBeSubsetOf(" },
-            { @"\.Should\(\)\.NotBeSubsetOf\(", ".ShouldNotBeSubsetOf(" },
-            { @"\.Should\(\)\.IntersectWith\(", ".ShouldIntersectWith(" },
-            { @"\.Should\(\)\.BeGreaterThanOrEqualTo\(", ".ShouldBeGreaterThanOrEqualTo(" },
-            { @"\.Should\(\)\.BeLessThanOrEqualTo\(", ".ShouldBeLessThanOrEqualTo(" },
-            { @"\.Should\(\)\.BeGreaterThan\(", ".ShouldBeGreaterThan(" },
-            { @"\.Should\(\)\.BeLessThan\(", ".ShouldBeLessThan(" },
-            { @"\.Should\(\)\.BeInRange\(", ".ShouldBeInRange(" },
-            { @"\.Should\(\)\.NotBeInRange\(", ".ShouldNotBeInRange(" },
-            { @"\.Should\(\)\.CompleteWithin\(", ".ShouldCompleteIn(" },
-            { @"\.Should\(\)\.NotCompleteWithin\(", ".ShouldNotCompleteIn(" },
-            { @"\.Should\(\)\.HaveCount\(", ".Count().ShouldBe(" },
-            { @"\.Should\(\)\.StartWith\(", ".ShouldStartWith(" },
-            { @"\.Should\(\)\.EndWith\(", ".ShouldEndWith(" },
-            { @"\.Should\(\)\.ThrowExactly<", ".ShouldThrowExactly<" },
-            { @"\.Should\(\)\.ThrowAsync<", ".ShouldThrowAsync<" },
-            { @"\.Should\(\)\.Throw<([^>]+)>\(\)", ".ShouldThrow<$1>(() =>)" },
-            { @"\.Should\(\)\.NotThrow\(\)", ".ShouldNotThrow()" },
-            { @"\.Should\(\)\.NotContain\(", ".ShouldNotContain(" },
-            { @"\.Should\(\)\.Contain\(", ".ShouldContain(" },
-            { @"\.Should\(\)\.BeEmpty\(\)", ".ShouldBeEmpty()" },
-            { @"\.Should\(\)\.NotBeEmpty\(\)", ".ShouldNotBeEmpty()" },
-            { @"\.Should\(\)\.BeNull\(\)", ".ShouldBeNull()" },
-            { @"\.Should\(\)\.NotBeNull\(\)", ".ShouldNotBeNull()" },
-            { @"\.Should\(\)\.BeTrue\(\)", ".ShouldBeTrue()" },
-            { @"\.Should\(\)\.BeFalse\(\)", ".ShouldBeFalse()" },
-            { @"\.Should\(\)\.NotBe\(", ".ShouldNotBe(" },
+            { @"\.Should\(\)\s*\n*\s*\.NotBeEquivalentTo\(", ".ShouldNotBeEquivalentTo(" },
+            { @"\.Should\(\)\s*\n*\s*\.ContainInOrder\(", ".ShouldBe(" },
+            { @"\.Should\(\)\s*\n*\s*\.ContainSingle\(\)", ".ShouldHaveSingleItem()" },
+            { @"\.Should\(\)\s*\n*\s*\.OnlyHaveUniqueItems\(\)", ".ShouldAllBeUnique()" },
+            { @"\.Should\(\)\s*\n*\s*\.BeNullOrEmpty\(\)", ".ShouldBeNullOrEmpty()" },
+            { @"\.Should\(\)\s*\n*\s*\.NotBeNullOrWhiteSpace\(\)", ".ShouldNotBeNullOrWhiteSpace()" },
+            { @"\.Should\(\)\s*\n*\s*\.NotBeOfType<", ".ShouldNotBeOfType<" },
+            { @"\.Should\(\)\s*\n*\s*\.BeOfType<([^>]+)>\(\)", ".ShouldBeOfType<$1>()" },
+            { @"\.Should\(\)\s*\n*\s*\.BeSameAs\(", ".ShouldBeSameAs(" },
+            { @"\.Should\(\)\s*\n*\s*\.NotBeSameAs\(", ".ShouldNotBeSameAs(" },
+            { @"\.Should\(\)\s*\n*\s*\.BeSubsetOf\(", ".ShouldBeSubsetOf(" },
+            { @"\.Should\(\)\s*\n*\s*\.NotBeSubsetOf\(", ".ShouldNotBeSubsetOf(" },
+            { @"\.Should\(\)\s*\n*\s*\.IntersectWith\(", ".ShouldIntersectWith(" },
+            { @"\.Should\(\)\s*\n*\s*\.BeGreaterThanOrEqualTo\(", ".ShouldBeGreaterThanOrEqualTo(" },
+            { @"\.Should\(\)\s*\n*\s*\.BeLessThanOrEqualTo\(", ".ShouldBeLessThanOrEqualTo(" },
+            { @"\.Should\(\)\s*\n*\s*\.BeGreaterThan\(", ".ShouldBeGreaterThan(" },
+            { @"\.Should\(\)\s*\n*\s*\.BeLessThan\(", ".ShouldBeLessThan(" },
+            { @"\.Should\(\)\s*\n*\s*\.BeInRange\(", ".ShouldBeInRange(" },
+            { @"\.Should\(\)\s*\n*\s*\.NotBeInRange\(", ".ShouldNotBeInRange(" },
+            { @"\.Should\(\)\s*\n*\s*\.CompleteWithin\(", ".ShouldCompleteIn(" },
+            { @"\.Should\(\)\s*\n*\s*\.NotCompleteWithin\(", ".ShouldNotCompleteIn(" },
+            { @"\.Should\(\)\s*\n*\s*\.HaveCount\(", ".Count().ShouldBe(" },
+            { @"\.Should\(\)\s*\n*\s*\.StartWith\(", ".ShouldStartWith(" },
+            { @"\.Should\(\)\s*\n*\s*\.EndWith\(", ".ShouldEndWith(" },
+            { @"\.Should\(\)\s*\n*\s*\.ThrowExactly<", ".ShouldThrowExactly<" },
+            { @"\.Should\(\)\s*\n*\s*\.ThrowAsync<", ".ShouldThrowAsync<" },
+            { @"\.Should\(\)\s*\n*\s*\.Throw<([^>]+)>\(\)", ".ShouldThrow<$1>(() =>)" },
+            { @"\.Should\(\)\s*\n*\s*\.NotThrow\(\)", ".ShouldNotThrow()" },
+            { @"\.Should\(\)\s*\n*\s*\.NotContain\(", ".ShouldNotContain(" },
+            { @"\.Should\(\)\s*\n*\s*\.Contain\(", ".ShouldContain(" },
+            { @"\.Should\(\)\s*\n*\s*\.BeEmpty\(\)", ".ShouldBeEmpty()" },
+            { @"\.Should\(\)\s*\n*\s*\.NotBeEmpty\(\)", ".ShouldNotBeEmpty()" },
+            { @"\.Should\(\)\s*\n*\s*\.BeNull\(\)", ".ShouldBeNull()" },
+            { @"\.Should\(\)\s*\n*\s*\.NotBeNull\(\)", ".ShouldNotBeNull()" },
+            { @"\.Should\(\)\s*\n*\s*\.BeTrue\(\)", ".ShouldBeTrue()" },
+            { @"\.Should\(\)\s*\n*\s*\.BeFalse\(\)", ".ShouldBeFalse()" },
+            { @"\.Should\(\)\s*\n*\s*\.NotBe\(", ".ShouldNotBe(" },
             // Handle Be with parameters
-            { @"\.Should\(\)\.Be\(([^)]+)\)", ".ShouldBe($1)" },
+            { @"\.Should\(\)\s*\n*\s*\.Be\(([^)]+)\)", ".ShouldBe($1)" },
             // Handle empty Be calls
-            { @"\.Should\(\)\.Be\(\)", ".ShouldBeEquivalentTo()" }
+            { @"\.Should\(\)\s*\n*\s*\.Be\(\)", ".ShouldBeEquivalentTo()" }
         };
 
         public static void Main(string[] args)
