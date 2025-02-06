@@ -57,7 +57,7 @@ namespace FluentAssertionsToShouldlyTests
             var expected = @"result.Data.ShouldBe(new Dictionary<int, IEnumerable<int>> { { 0, new[] { 5 } } });";
 
             // Act
-            var result = FluentAssertionsToShouldly.FluentAssertionsToShouldlyMigrator.TestConversion(input);
+            var result = ApplyConversion(input);
 
             // Assert
             Assert.That(result, Is.EqualTo(expected));

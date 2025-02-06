@@ -97,7 +97,7 @@ namespace FluentAssertionsToShouldly
             Console.WriteLine("Migration complete. Please review changes, restore packages, and run tests.");
         }
 
-        public void UpdateProjectFiles(string solutionDir)
+        private void UpdateProjectFiles(string solutionDir)
         {
             Console.WriteLine("Updating project files...");
             
@@ -153,7 +153,7 @@ namespace FluentAssertionsToShouldly
             }
         }
 
-        public void UpdateTestFiles(string solutionDir)
+        private void UpdateTestFiles(string solutionDir)
         {
             Console.WriteLine("Updating test files...");
             
@@ -191,12 +191,11 @@ namespace FluentAssertionsToShouldly
                                 {
                                     var newContent = Regex.Replace(currentContent, replacement.Key, replacement.Value, 
                                         RegexOptions.Multiline, TimeSpan.FromSeconds(5));
+
+                                    if (newContent == currentContent) continue;
                                     
-                                    if (newContent != currentContent)
-                                    {
-                                        currentContent = newContent;
-                                        madeChanges = true;
-                                    }
+                                    currentContent = newContent;
+                                    madeChanges = true;
                                 }
                                 catch (RegexMatchTimeoutException)
                                 {
@@ -241,38 +240,6 @@ namespace FluentAssertionsToShouldly
             }
             
             Console.WriteLine($"Completed processing {processedCount} files.");
-        }
-
-        public static string TestConversion(string input)
-        {
-            var currentContent = input;
-            var madeChanges = true;
-            var iterations = 0;
-
-            while (madeChanges && iterations < 10)
-            {
-                madeChanges = false;
-                iterations++;
-
-                foreach (var replacement in AssertionReplacements)
-                {
-                    var match = Regex.Match(currentContent, replacement.Key);
-                    if (match.Success)
-                    {
-                        Console.WriteLine($"Pattern matched: {replacement.Key}");
-                        Console.WriteLine($"Groups: {string.Join(", ", match.Groups.Cast<Group>().Select(g => g.Value))}");
-                        var newContent = Regex.Replace(currentContent, replacement.Key, replacement.Value);
-                        if (newContent != currentContent)
-                        {
-                            Console.WriteLine($"Replaced with: {newContent}");
-                            currentContent = newContent;
-                            madeChanges = true;
-                        }
-                    }
-                }
-            }
-
-            return currentContent;
         }
     }
 } 
