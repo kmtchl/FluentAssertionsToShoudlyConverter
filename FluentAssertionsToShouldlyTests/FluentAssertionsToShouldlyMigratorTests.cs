@@ -597,6 +597,81 @@ namespace FluentAssertionsToShouldlyTests
             Assert.That(NormalizeString(result), Is.EqualTo(NormalizeString(expected)));
         }
 
+        [Test]
+        public void ShouldConvertComplexArrayWithNestedDictionariesAndStrictOrdering()
+        {
+            // Arrange
+            var input = @"
+                var result = await query.GetData(new Criteria());
+
+                result.Items[""A""].Should().BeEquivalentTo(new[]
+                {
+                    new ItemDetails(""ID1"", 0, ""CODE1"", ""Name1""),
+                    new ItemDetails(""ID2"", 1, ""CODE2"", ""Name2"", new Dictionary<string, IDictionary<int, IEnumerable<int>>>
+                    {
+                        { string.Empty, new Dictionary<int, IEnumerable<int>> { { default, new[] { 1, 2 } } } },
+                        { ""X"", new Dictionary<int, IEnumerable<int>> { { default, new[] { 4 } }, { 3, new[] { 5 } } } }
+                    }, ItemType.TypeA, true),
+                    new ItemDetails(""ID3"", 2, ""CODE3"", ""Name3"", ItemType.TypeB),
+                    new ItemDetails(""ID4"", 2, ""CODE4"", ""Name4"", ItemType.TypeB)
+                }, options => options.WithStrictOrdering());
+
+                result.Items[""B""].Should().BeEquivalentTo(new[]
+                {
+                    new ItemDetails(""ID5"", 0, ""CODE5"", ""Name5""),
+                    new ItemDetails(""ID6"", 1, ""CODE6"", ""Name6"", new Dictionary<string, IDictionary<int, IEnumerable<int>>>
+                    {
+                        { string.Empty, new Dictionary<int, IEnumerable<int>> { { default, new[] { 13 } }, { 1, new[] { 14 } } } }
+                    }, ItemType.TypeA, true)
+                }, options => options.WithStrictOrdering());
+            ";
+
+            var expected = @"
+                var result = await query.GetData(new Criteria());
+
+                result.Items[""A""].ShouldBe(new[]
+                {
+                    new ItemDetails(""ID1"", 0, ""CODE1"", ""Name1""),
+                    new ItemDetails(""ID2"", 1, ""CODE2"", ""Name2"", new Dictionary<string, IDictionary<int, IEnumerable<int>>>
+                    {
+                        { string.Empty, new Dictionary<int, IEnumerable<int>> { { default, new[] { 1, 2 } } } },
+                        { ""X"", new Dictionary<int, IEnumerable<int>> { { default, new[] { 4 } }, { 3, new[] { 5 } } } }
+                    }, ItemType.TypeA, true),
+                    new ItemDetails(""ID3"", 2, ""CODE3"", ""Name3"", ItemType.TypeB),
+                    new ItemDetails(""ID4"", 2, ""CODE4"", ""Name4"", ItemType.TypeB)
+                });
+
+                result.Items[""B""].ShouldBe(new[]
+                {
+                    new ItemDetails(""ID5"", 0, ""CODE5"", ""Name5""),
+                    new ItemDetails(""ID6"", 1, ""CODE6"", ""Name6"", new Dictionary<string, IDictionary<int, IEnumerable<int>>>
+                    {
+                        { string.Empty, new Dictionary<int, IEnumerable<int>> { { default, new[] { 13 } }, { 1, new[] { 14 } } } }
+                    }, ItemType.TypeA, true)
+                });
+            ";
+
+            // Act
+            var result = ApplyConversion(input);
+
+            // Assert
+            Assert.That(NormalizeString(result), Is.EqualTo(NormalizeString(expected)));
+        }
+
+        [Test]
+        public void ShouldConvertSimpleStringArrayWithoutStrictOrdering()
+        {
+            // Arrange
+            var input = @"model.Include.Should().BeEquivalentTo(new[] { ""dts"", ""dth"" });";
+            var expected = @"model.Include.ShouldBeEquivalentTo(new[] { ""dts"", ""dth"" });";
+
+            // Act
+            var result = ApplyConversion(input);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
         private string ApplyConversion(string input)
         {
             var currentContent = input;

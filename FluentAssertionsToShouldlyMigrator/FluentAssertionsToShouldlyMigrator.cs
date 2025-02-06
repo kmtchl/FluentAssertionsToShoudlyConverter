@@ -15,20 +15,19 @@ namespace FluentAssertionsToShouldly
             // Handle Dictionary without strict ordering
             { @"(.*?)\.Should\(\)(?:\s*\n*\s*|\s+)\.BeEquivalentTo\((new Dictionary<[^>]+>\s*\{[^}]+\})\)", "$1.ShouldBeEquivalentTo($2)" },
             
-            // Handle array with strict ordering
-            { @"\.Should\(\)(?:\s*\n*\s*|\s+)\.BeEquivalentTo\((new\[\][^\)]+?)\s*,(?:\s*\n*\s*|\s+)options(?:\s*\n*\s*|\s+)=>(?:\s*\n*\s*|\s+)options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
-            { @"\.Should\(\)(?:\s*\n*\s*|\s+)\.BeEquivalentTo\((\[[^\]]+\])\s*,(?:\s*\n*\s*|\s+)options(?:\s*\n*\s*|\s+)=>(?:\s*\n*\s*|\s+)options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
+            // Handle array with strict ordering - most specific first
+            { @"(.*?)\.Should\(\)(?:\s*\n*\s*|\s+)\.BeEquivalentTo\((new\s*\[\s*\][\s\S]*?),\s*options\s*=>\s*options\.WithStrictOrdering\(\)\s*\)", "$1.ShouldBe($2)" },
             
             // Handle variable with strict ordering
             { @"\.Should\(\)\s*\n*\s*\.BeEquivalentTo\(([^,\)]+?)\s*,\s*\n*\s*options\s*=>\s*\n*\s*options\.WithStrictOrdering\(\)\)", ".ShouldBe($1)" },
             
-            // Handle collection expressions
-            { @"\.Should\(\)\s*\n*\s*\.BeEquivalentTo\((\[(?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*\])\)", ".ShouldBeEquivalentTo($1)" },
+            // Handle collection expressions - move this before the generic BeEquivalentTo pattern
+            { @"(.*?)\.Should\(\)(?:\s*\n*\s*|\s+)\.BeEquivalentTo\((new\s*\[\s*\][^)]*)\)", "$1.ShouldBeEquivalentTo($2)" },
             
             // Handle empty BeEquivalentTo calls
             { @"\.Should\(\)\s*\n*\s*\.BeEquivalentTo\(\)", ".ShouldBeEquivalentTo()" },
             
-            // Generic BeEquivalentTo pattern
+            // Generic BeEquivalentTo pattern - keep this after the more specific patterns
             { @"\.Should\(\)\s*\n*\s*\.BeEquivalentTo\(([^,\)]+)\)", ".ShouldBeEquivalentTo($1)" },
             
             // Rest of the patterns
