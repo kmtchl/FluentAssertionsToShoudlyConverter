@@ -1,0 +1,5 @@
+**/obj/
+**/bin/
+**/.idea/
+FluentAssertionsToShouldlyConverter.sln.DotSettings.user
+Folder.DotSettings.user

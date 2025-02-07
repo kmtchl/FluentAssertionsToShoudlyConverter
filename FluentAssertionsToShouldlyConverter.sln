@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAssertionsToShouldlyConverter", "FluentAssertionsToShouldlyConverter\FluentAssertionsToShouldlyConverter.csproj", "{AF6F5712-F790-C2DF-AE88-F8541D4105AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAssertionsToShouldlyConverterTests", "FluentAssertionsToShouldlyConverterTests\FluentAssertionsToShouldlyConverterTests.csproj", "{603A6DEE-455D-1E68-66CF-E4F84DDD30A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF6F5712-F790-C2DF-AE88-F8541D4105AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF6F5712-F790-C2DF-AE88-F8541D4105AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF6F5712-F790-C2DF-AE88-F8541D4105AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF6F5712-F790-C2DF-AE88-F8541D4105AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{603A6DEE-455D-1E68-66CF-E4F84DDD30A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{603A6DEE-455D-1E68-66CF-E4F84DDD30A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{603A6DEE-455D-1E68-66CF-E4F84DDD30A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{603A6DEE-455D-1E68-66CF-E4F84DDD30A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C3ACD273-8DE2-4F6D-AD1B-D84C22410FE0}
+	EndGlobalSection
+EndGlobal
